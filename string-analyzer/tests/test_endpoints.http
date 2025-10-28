@@ -1,0 +1,19 @@
+### Test string creation
+POST http://localhost:8000/strings/
+Content-Type: application/json
+
+{
+    "value": "Hello, World!"
+}
+
+### Get string by value
+GET http://localhost:8000/strings/Hello, World!
+
+### Get all strings
+GET http://localhost:8000/strings/
+
+### Get palindromes only
+GET http://localhost:8000/strings/?is_palindrome=true
+
+### Get strings with length between 5 and 10
+GET http://localhost:8000/strings/?min_length=5&max_length=10
