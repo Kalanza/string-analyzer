@@ -4,7 +4,9 @@ A FastAPI-based service that provides comprehensive string analysis and filterin
 
 ## 🌐 Live Demo
 
-**Base URL**: `https://your-app-name.up.railway.app` *(will be updated after deployment)*
+**Base URL**: *(will be updated after deployment)*
+- Railway: `https://your-app-name.up.railway.app`
+- DigitalOcean: `https://your-app-name.ondigitalocean.app`
 
 ## ✨ Features
 
@@ -160,7 +162,54 @@ string-analyzer/
    - Swagger UI: `http://localhost:8000/docs`
    - ReDoc: `http://localhost:8000/redoc`
 
-## ☁️ Deployment on Railway
+## ☁️ Deployment Options
+
+Choose your preferred deployment platform:
+
+### 🚂 Railway (Recommended for Beginners)
+**See [DEPLOYMENT.md](DEPLOYMENT.md) for detailed guide**
+
+- ✅ $5 free credit per month
+- ✅ Auto-deploy from GitHub
+- ✅ Built-in PostgreSQL
+- ✅ Easiest setup
+
+**Quick Start:**
+1. Go to [railway.app](https://railway.app)
+2. Connect GitHub repo
+3. Add PostgreSQL database
+4. Deploy!
+
+---
+
+### 🌊 DigitalOcean App Platform
+**See [DIGITALOCEAN.md](DIGITALOCEAN.md) for detailed guide**
+
+- ✅ $200 free credit (60 days)
+- ✅ Professional infrastructure
+- ✅ Managed PostgreSQL
+- ✅ Great for production
+
+**Quick Start:**
+1. Go to [digitalocean.com](https://www.digitalocean.com/products/app-platform)
+2. Connect GitHub repo
+3. Add PostgreSQL database
+4. Deploy!
+
+---
+
+### Comparison
+
+| Feature | Railway | DigitalOcean |
+|---------|---------|--------------|
+| Free Tier | $5/month credit | $200/60 days |
+| Monthly Cost | ~$5-10 | ~$12 |
+| Setup Difficulty | Easiest | Easy |
+| Best For | MVPs, Hobby | Production |
+
+---
+
+## ☁️ Deployment on Railway (Quick Guide)
 
 ### Prerequisites
 - GitHub account
