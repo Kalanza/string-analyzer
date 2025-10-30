@@ -14,6 +14,10 @@ if not DATABASE_URL:
     # Default to SQLite for local development
     BASE_DIR = os.path.dirname(os.path.abspath(__file__))
     DATABASE_URL = f"sqlite:///{os.path.join(BASE_DIR, 'string_analyzer.db')}"
+else:
+    # Heroku uses postgres:// but SQLAlchemy requires postgresql://
+    if DATABASE_URL.startswith("postgres://"):
+        DATABASE_URL = DATABASE_URL.replace("postgres://", "postgresql://", 1)
 
 # Handle SQLite-specific connection arguments
 connect_args = {}
