@@ -169,14 +169,30 @@ async def list_strings(
 
         results = get_all_strings(filters)
         
+        # Convert SQLAlchemy objects to dictionaries
+        results_dict = [
+            {
+                "id": r.id,
+                "value": r.value,
+                "length": r.length,
+                "is_palindrome": r.is_palindrome,
+                "unique_characters": r.unique_characters,
+                "word_count": r.word_count,
+                "character_frequency_map": r.character_frequency_map,
+                "sha256_hash": r.sha256_hash,
+                "created_at": r.created_at.isoformat() if r.created_at else None
+            }
+            for r in results
+        ]
+        
         # Remove None values from filters
         applied_filters = {k: v for k, v in filters.items() if v is not None}
 
         return {
             "status": "success",
             "filters_applied": applied_filters,
-            "count": len(results),
-            "results": results
+            "count": len(results_dict),
+            "results": results_dict
         }
 
     except Exception as e:
