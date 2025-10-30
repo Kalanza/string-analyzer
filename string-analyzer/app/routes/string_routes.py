@@ -1,11 +1,9 @@
 from app.utils.filters import parse_nlp_filter
-from fastapi import APIRouter, HTTPException, status, Body, Path, Depends, Query
+from fastapi import APIRouter, HTTPException, status, Body, Path, Query
 from pydantic import BaseModel, Field
-from sqlalchemy.orm import Session
 from typing import Dict, Any, Optional, List
 from app.utils import analyzer
 from app.models.database import add_string, get_string_by_hash, get_all_strings, delete_string, StringRecord
-from app.db import get_db
 from hashlib import sha256
 
 # Pydantic models for request/response validation
@@ -142,8 +140,7 @@ async def list_strings(
     max_length: Optional[int] = Query(None, ge=0, description="Maximum string length"),
     word_count: Optional[int] = Query(None, ge=0, description="Filter by word count"),
     contains_character: Optional[str] = Query(None, min_length=1, max_length=1, 
-                                           description="Filter by character presence"),
-    db: Session = Depends(get_db)
+                                           description="Filter by character presence")
 ):
     """
     Retrieve all string records with optional filters.
@@ -154,7 +151,6 @@ async def list_strings(
         max_length: Maximum string length
         word_count: Filter by exact word count
         contains_character: Filter by character presence
-        db: Database session dependency
         
     Returns:
         Dict containing filtered results and metadata
@@ -171,7 +167,7 @@ async def list_strings(
             "contains_character": contains_character,
         }
 
-        results = get_all_strings(db, filters)
+        results = get_all_strings(filters)
         
         # Remove None values from filters
         applied_filters = {k: v for k, v in filters.items() if v is not None}

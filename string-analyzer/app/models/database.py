@@ -79,7 +79,7 @@ def get_string_by_hash(hash_value: str) -> Optional[StringRecord]:
     finally:
         db.close()
 
-def get_all_strings(filters: Dict[str, Any]) -> List[StringRecord]:
+def get_all_strings(filters: Dict[str, Any] = None) -> List[StringRecord]:
     """
     Retrieve all string records with optional filters
     
@@ -97,6 +97,9 @@ def get_all_strings(filters: Dict[str, Any]) -> List[StringRecord]:
     Raises:
         HTTPException: If database operation fails
     """
+    if filters is None:
+        filters = {}
+        
     try:
         db = SessionLocal()
         query = db.query(StringRecord)
