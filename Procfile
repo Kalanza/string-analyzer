@@ -1,1 +1,1 @@
-web: cd string-analyzer && uvicorn app.main:app --host 0.0.0.0 --port $PORT
+web: export PYTHONPATH=$PYTHONPATH:$PWD/string-analyzer && cd string-analyzer && uvicorn app.main:app --host 0.0.0.0 --port $PORT
