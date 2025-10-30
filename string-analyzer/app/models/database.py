@@ -127,6 +127,43 @@ def get_all_strings(filters: Dict[str, Any]) -> List[StringRecord]:
     finally:
         db.close()
 
+def delete_string(hash_value: str) -> bool:
+    """
+    Delete a string record by its SHA-256 hash
+    
+    Args:
+        hash_value: SHA-256 hash of the string to delete
+        
+    Returns:
+        bool: True if deleted, False if not found
+        
+    Raises:
+        HTTPException: If database operation fails
+    """
+    try:
+        db = SessionLocal()
+        
+        # Find the record
+        record = db.query(StringRecord).filter(StringRecord.sha256_hash == hash_value).first()
+        
+        if not record:
+            return False
+        
+        # Delete the record
+        db.delete(record)
+        db.commit()
+        
+        return True
+        
+    except Exception as e:
+        db.rollback()
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Failed to delete string record: {str(e)}"
+        )
+    finally:
+        db.close()
+
 # Create all tables
 def init_db():
     """Initialize the database by creating all tables"""

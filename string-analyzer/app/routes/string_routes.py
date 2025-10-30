@@ -1,10 +1,12 @@
+from app.utils.filters import parse_nlp_filter
 from fastapi import APIRouter, HTTPException, status, Body, Path, Depends, Query
 from pydantic import BaseModel, Field
 from sqlalchemy.orm import Session
 from typing import Dict, Any, Optional, List
 from app.utils import analyzer
-from app.models.database import add_string, get_string_by_hash, get_all_strings, StringRecord
+from app.models.database import add_string, get_string_by_hash, get_all_strings, delete_string, StringRecord
 from app.db import get_db
+from hashlib import sha256
 
 # Pydantic models for request/response validation
 class StringAnalyzeRequest(BaseModel):
@@ -189,3 +191,61 @@ async def list_strings(
 
 
 
+@router.get("/filter-by-natural-language")
+def filter_nlp(query: str):
+    """
+    Interpret natural language filter queries and return results.
+    Example: ?query=single word palindromic strings
+    """
+    filters = parse_nlp_filter(query)
+
+    # Here you would apply filters to your data source or DB
+    # For now, let's mock some filtered results:
+    mock_data = ["madam", "racecar", "deed", "hello", "zoom"]
+
+    result = []
+
+    for text in mock_data:
+        if filters.get("is_palindrome") and text != text[::-1]:
+            continue
+        if filters.get("contains_character") and filters["contains_character"] not in text:
+            continue
+        if filters.get("min_length") and len(text) < filters["min_length"]:
+            continue
+        if filters.get("word_count") and len(text.split()) != filters["word_count"]:
+            continue
+        result.append(text)
+
+    return {"filters": filters, "results": result}
+
+
+@router.delete("/{string_value}", status_code=status.HTTP_204_NO_CONTENT)
+async def delete_string_record(string_value: str = Path(..., min_length=1, description="The string to delete")):
+    """
+    Delete a string record by its value.
+    
+    Parameters:
+        string_value (str): The string to delete from the database
+        
+    Returns:
+        204 No Content on successful deletion
+        
+    Raises:
+        HTTPException: 404 if string not found in database
+        HTTPException: 500 if database operation fails
+    """
+    # Compute hash for lookup
+    analysis = analyzer.analyze_string(string_value)
+    hash_value = analysis["sha256_hash"]
+    
+    # Attempt to delete the record
+    deleted = delete_string(hash_value)
+    
+    if not deleted:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="String not found in database"
+        )
+    
+    # Return None for 204 No Content (no response body)
+    return None
