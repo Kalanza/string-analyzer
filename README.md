@@ -1,9 +1,6 @@
-# String Analyzer API
 # String Analyzer (minimal)
 
 A small FastAPI service that analyzes strings and exposes a simple HTTP API.
-
-This repository has been cleaned to remove legacy deployment/Heroku files and keep a minimal project layout.
 
 Quick start (Windows PowerShell):
 
@@ -24,7 +21,7 @@ Project layout:
 - `tests/` — simple HTTP examples
 
 Notes:
-- If you need deployment instructions (Heroku/Railway), re-add them separately — they were removed to keep the repo minimal.
+- If you need deployment instructions (Heroku/Railway), re-add them separately.
 - Keep `.env` out of source control; use `.env.example` as the template.
 
 License: MIT
