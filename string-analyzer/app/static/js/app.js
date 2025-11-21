@@ -25,7 +25,7 @@ const refreshHistoryBtn = document.getElementById('refreshHistory');
 
 // Theme Management
 function initTheme() {
-    const savedTheme = localStorage.getItem('theme') || 'light';
+    const savedTheme = localStorage.getItem('theme') || 'dark';
     document.documentElement.setAttribute('data-theme', savedTheme);
     updateThemeIcon(savedTheme);
 }
@@ -41,6 +41,32 @@ function toggleTheme() {
 function updateThemeIcon(theme) {
     const icon = themeToggle.querySelector('i');
     icon.className = theme === 'light' ? 'fas fa-moon' : 'fas fa-sun';
+}
+
+// Reveal Animations
+function initReveal() {
+    const revealItems = document.querySelectorAll('[data-reveal]');
+    const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    if (prefersReduced || !('IntersectionObserver' in window)) {
+        revealItems.forEach(item => item.classList.add('is-visible'));
+        return () => {};
+    }
+
+    const observer = new IntersectionObserver((entries, obs) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                const delay = entry.target.dataset.revealDelay || 0;
+                entry.target.style.transitionDelay = `${delay}ms`;
+                entry.target.classList.add('is-visible');
+                obs.unobserve(entry.target);
+            }
+        });
+    }, { threshold: 0.25, rootMargin: '0px 0px -60px 0px' });
+
+    revealItems.forEach(item => observer.observe(item));
+
+    return () => observer.disconnect();
 }
 
 // Toast Notification
@@ -108,6 +134,7 @@ analyzerForm.addEventListener('submit', async (e) => {
 function displayResults(data) {
     // Show results card
     resultsCard.style.display = 'block';
+    resultsCard.classList.add('is-visible');
     
     // Palindrome status
     const palindromeResult = document.getElementById('palindromeResult');
@@ -355,6 +382,8 @@ document.querySelectorAll('.nav-link').forEach(link => {
 // Initialize on page load
 document.addEventListener('DOMContentLoaded', () => {
     initTheme();
+    initReveal();
+    document.body.classList.remove('no-motion');
     loadHistory();
     
     // Theme toggle event

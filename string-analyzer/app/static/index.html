@@ -3,264 +3,307 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>String Analyzer - Analyze Your Strings</title>
+    <title>String Analyzer · Text Ritual Lab</title>
     <link rel="stylesheet" href="/static/css/styles.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700&family=Chivo+Mono:wght@400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
-<body>
-    <!-- Navigation -->
-    <nav class="navbar">
-        <div class="container">
-            <div class="nav-content">
-                <div class="logo">
-                    <i class="fas fa-text-height"></i>
-                    <span>String Analyzer</span>
-                </div>
-                <div class="nav-links">
-                    <a href="#home" class="nav-link active">Home</a>
-                    <a href="#analyzer" class="nav-link">Analyzer</a>
-                    <a href="#history" class="nav-link">History</a>
-                    <a href="/docs" class="nav-link" target="_blank">API Docs</a>
-                </div>
-                <button class="theme-toggle" id="themeToggle">
-                    <i class="fas fa-moon"></i>
-                </button>
-            </div>
-        </div>
-    </nav>
+<body class="no-motion">
+    <div class="background-canvas" aria-hidden="true">
+        <div class="grid-overlay"></div>
+        <div class="orb orb-one"></div>
+        <div class="orb orb-two"></div>
+        <div class="orb orb-three"></div>
+        <div class="scanline"></div>
+    </div>
 
-    <!-- Hero Section -->
-    <section class="hero" id="home">
-        <div class="container">
-            <div class="hero-content">
-                <h1 class="hero-title">
-                    Analyze Your Strings
-                    <span class="gradient-text">Instantly</span>
-                </h1>
-                <p class="hero-subtitle">
-                    Get detailed insights about your text including palindrome detection, 
-                    character frequency, word count, and more.
-                </p>
-                <div class="hero-stats">
-                    <div class="stat">
-                        <i class="fas fa-check-circle"></i>
-                        <div>
-                            <div class="stat-number" id="totalAnalyzed">0</div>
-                            <div class="stat-label">Strings Analyzed</div>
-                        </div>
-                    </div>
-                    <div class="stat">
-                        <i class="fas fa-spell-check"></i>
-                        <div>
-                            <div class="stat-number" id="palindromeCount">0</div>
-                            <div class="stat-label">Palindromes Found</div>
-                        </div>
-                    </div>
-                </div>
-                <a href="#analyzer" class="btn btn-primary btn-large">
-                    Start Analyzing <i class="fas fa-arrow-right"></i>
-                </a>
-            </div>
-        </div>
-    </section>
-
-    <!-- Analyzer Section -->
-    <section class="analyzer-section" id="analyzer">
-        <div class="container">
-            <h2 class="section-title">String Analyzer</h2>
-            <p class="section-subtitle">Enter any text to analyze its properties</p>
-            
-            <div class="analyzer-container">
-                <div class="input-card">
-                    <form id="analyzerForm">
-                        <div class="form-group">
-                            <label for="stringInput">
-                                <i class="fas fa-keyboard"></i> Enter Text
-                            </label>
-                            <textarea 
-                                id="stringInput" 
-                                placeholder="Type or paste your text here..."
-                                rows="5"
-                                required
-                            ></textarea>
-                            <div class="char-counter">
-                                <span id="charCount">0</span> characters
-                            </div>
-                        </div>
-                        <button type="submit" class="btn btn-primary btn-block">
-                            <i class="fas fa-search"></i> Analyze String
-                        </button>
-                    </form>
-                </div>
-
-                <!-- Results Card -->
-                <div class="results-card" id="resultsCard" style="display: none;">
-                    <div class="results-header">
-                        <h3><i class="fas fa-chart-bar"></i> Analysis Results</h3>
-                        <button class="btn-close" id="closeResults">
-                            <i class="fas fa-times"></i>
-                        </button>
-                    </div>
-                    
-                    <div class="result-item palindrome-result" id="palindromeResult">
-                        <div class="result-icon">
-                            <i class="fas fa-sync-alt"></i>
-                        </div>
-                        <div class="result-content">
-                            <div class="result-label">Palindrome</div>
-                            <div class="result-value" id="palindromeValue">-</div>
-                        </div>
-                    </div>
-
-                    <div class="results-grid">
-                        <div class="result-item">
-                            <div class="result-icon">
-                                <i class="fas fa-ruler"></i>
-                            </div>
-                            <div class="result-content">
-                                <div class="result-label">Length</div>
-                                <div class="result-value" id="lengthValue">-</div>
-                            </div>
-                        </div>
-
-                        <div class="result-item">
-                            <div class="result-icon">
-                                <i class="fas fa-list-ol"></i>
-                            </div>
-                            <div class="result-content">
-                                <div class="result-label">Word Count</div>
-                                <div class="result-value" id="wordCountValue">-</div>
-                            </div>
-                        </div>
-
-                        <div class="result-item">
-                            <div class="result-icon">
-                                <i class="fas fa-star"></i>
-                            </div>
-                            <div class="result-content">
-                                <div class="result-label">Unique Characters</div>
-                                <div class="result-value" id="uniqueCharsValue">-</div>
-                            </div>
-                        </div>
-
-                        <div class="result-item">
-                            <div class="result-icon">
-                                <i class="fas fa-fingerprint"></i>
-                            </div>
-                            <div class="result-content">
-                                <div class="result-label">SHA-256 Hash</div>
-                                <div class="result-value hash-value" id="hashValue">-</div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="frequency-section">
-                        <h4><i class="fas fa-chart-pie"></i> Character Frequency</h4>
-                        <div class="frequency-chart" id="frequencyChart"></div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- History Section -->
-    <section class="history-section" id="history">
-        <div class="container">
-            <div class="section-header">
-                <div>
-                    <h2 class="section-title">Analysis History</h2>
-                    <p class="section-subtitle">View all previously analyzed strings</p>
-                </div>
-                <button class="btn btn-secondary" id="refreshHistory">
-                    <i class="fas fa-sync-alt"></i> Refresh
-                </button>
-            </div>
-
-            <!-- Filters -->
-            <div class="filters-card">
-                <h3><i class="fas fa-filter"></i> Filters</h3>
-                <div class="filters-grid">
-                    <div class="filter-group">
-                        <label>
-                            <input type="checkbox" id="filterPalindrome">
-                            <span>Palindromes Only</span>
-                        </label>
-                    </div>
-                    <div class="filter-group">
-                        <label for="minLength">Min Length</label>
-                        <input type="number" id="minLength" min="0" placeholder="Min">
-                    </div>
-                    <div class="filter-group">
-                        <label for="maxLength">Max Length</label>
-                        <input type="number" id="maxLength" min="0" placeholder="Max">
-                    </div>
-                    <div class="filter-group">
-                        <label for="wordCount">Word Count</label>
-                        <input type="number" id="wordCount" min="0" placeholder="Exact">
-                    </div>
-                    <button class="btn btn-primary" id="applyFilters">
-                        <i class="fas fa-check"></i> Apply Filters
-                    </button>
-                    <button class="btn btn-secondary" id="clearFilters">
-                        <i class="fas fa-times"></i> Clear
-                    </button>
-                </div>
-            </div>
-
-            <!-- History Items -->
-            <div class="history-grid" id="historyGrid">
-                <!-- History items will be inserted here by JavaScript -->
-                <div class="loading" id="historyLoading">
-                    <i class="fas fa-spinner fa-spin"></i> Loading history...
-                </div>
-            </div>
-
-            <div class="empty-state" id="emptyState" style="display: none;">
-                <i class="fas fa-inbox"></i>
-                <h3>No Strings Found</h3>
-                <p>Start analyzing strings to build your history!</p>
-                <a href="#analyzer" class="btn btn-primary">
-                    Analyze Your First String
-                </a>
-            </div>
-        </div>
-    </section>
-
-    <!-- Footer -->
-    <footer class="footer">
-        <div class="container">
-            <div class="footer-content">
-                <div class="footer-brand">
+    <div class="page-shell">
+        <!-- Navigation -->
+        <nav class="navbar">
+            <div class="container">
+                <div class="nav-content">
                     <div class="logo">
                         <i class="fas fa-text-height"></i>
                         <span>String Analyzer</span>
                     </div>
-                    <p>Powerful string analysis tool built with FastAPI</p>
+                    <div class="nav-links">
+                        <a href="#home" class="nav-link active">Home</a>
+                        <a href="#analyzer" class="nav-link">Analyzer</a>
+                        <a href="#history" class="nav-link">History</a>
+                        <a href="/docs" class="nav-link" target="_blank">API Docs</a>
+                    </div>
+                    <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+                        <i class="fas fa-moon"></i>
+                    </button>
                 </div>
-                <div class="footer-links">
-                    <h4>Quick Links</h4>
-                    <a href="#home">Home</a>
-                    <a href="#analyzer">Analyzer</a>
-                    <a href="#history">History</a>
-                    <a href="/docs" target="_blank">API Docs</a>
+            </div>
+        </nav>
+
+        <main>
+            <!-- Hero Section -->
+            <section class="hero" id="home">
+                <div class="container hero-inner">
+                    <div class="hero-content" data-reveal>
+                        <p class="eyebrow">Analog precision • Digital ritual</p>
+                        <h1 class="hero-title">
+                            Decode every string with
+                            <span class="hero-glow">forensic clarity</span>
+                        </h1>
+                        <p class="hero-subtitle">
+                            String Analyzer turns raw text into signals—palindromes, entropy, frequency maps.
+                            Built for engineers who obsess over the texture of their data.
+                        </p>
+                        <div class="hero-stats">
+                            <div class="stat" data-reveal>
+                                <div class="stat-label">Strings Processed</div>
+                                <div class="stat-number" id="totalAnalyzed">0</div>
+                                <span class="stat-meta">live counter</span>
+                            </div>
+                            <div class="stat" data-reveal data-reveal-delay="120">
+                                <div class="stat-label">Palindromes Flagged</div>
+                                <div class="stat-number" id="palindromeCount">0</div>
+                                <span class="stat-meta">since launch</span>
+                            </div>
+                        </div>
+                        <div class="hero-actions">
+                            <a href="#analyzer" class="btn btn-primary btn-large">
+                                Launch Analyzer <i class="fas fa-arrow-right"></i>
+                            </a>
+                            <a href="#history" class="btn btn-ghost">
+                                Browse Signals <i class="fas fa-wave-square"></i>
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="hero-console" data-reveal data-reveal-delay="180">
+                        <div class="console-header">
+                            <span>Live Spectrogram</span>
+                            <div class="console-dots">
+                                <span></span><span></span><span></span>
+                            </div>
+                        </div>
+                        <ul class="console-stream">
+                            <li><span>>></span> /analyze "noon" — palindrome detected ✓</li>
+                            <li><span>>></span> /hash "signal drift" — sha256 ready</li>
+                            <li><span>>></span> /freq "hyperglyph" — 9 unique glyphs</li>
+                            <li><span>>></span> /entropy "0101..." — binary bias</li>
+                        </ul>
+                        <div class="console-foot">
+                            <span class="pulse-dot"></span>
+                            <p>Listening for your next string</p>
+                        </div>
+                    </div>
                 </div>
-                <div class="footer-info">
-                    <h4>About</h4>
-                    <p>Built by <strong>Kalanza</strong></p>
-                    <p>Deployed on Heroku</p>
-                    <div class="social-links">
-                        <a href="https://github.com/Kalanza/string-analyzer" target="_blank">
-                            <i class="fab fa-github"></i>
+            </section>
+
+            <!-- Analyzer Section -->
+            <section class="analyzer-section" id="analyzer">
+                <div class="container">
+                    <div class="section-heading" data-reveal>
+                        <p class="eyebrow">Tooling</p>
+                        <h2 class="section-title">String Analyzer</h2>
+                        <p class="section-subtitle">Drop in any text. We return the story hidden inside.</p>
+                    </div>
+                    
+                    <div class="analyzer-container">
+                        <div class="input-card" data-reveal>
+                            <div class="card-header">
+                                <div>
+                                    <h3>Input Zone</h3>
+                                    <p>Paste a sentence, a log line, or entire payload.</p>
+                                </div>
+                                <div class="card-chip">live</div>
+                            </div>
+                            <form id="analyzerForm">
+                                <div class="form-group">
+                                    <label for="stringInput">
+                                        <i class="fas fa-keyboard"></i> Enter Text
+                                    </label>
+                                    <textarea 
+                                        id="stringInput" 
+                                        placeholder="Type or paste your text here..."
+                                        rows="6"
+                                        required
+                                    ></textarea>
+                                    <div class="char-counter">
+                                        <span id="charCount">0</span> characters
+                                    </div>
+                                </div>
+                                <button type="submit" class="btn btn-primary btn-block">
+                                    <i class="fas fa-bolt"></i> Analyze String
+                                </button>
+                            </form>
+                        </div>
+
+                        <!-- Results Card -->
+                        <div class="results-card" id="resultsCard" style="display: none;" data-reveal>
+                            <div class="results-header">
+                                <h3><i class="fas fa-chart-bar"></i> Analysis Results</h3>
+                                <button class="btn-close" id="closeResults">
+                                    <i class="fas fa-times"></i>
+                                </button>
+                            </div>
+                            
+                            <div class="result-item palindrome-result" id="palindromeResult">
+                                <div class="result-icon">
+                                    <i class="fas fa-sync-alt"></i>
+                                </div>
+                                <div class="result-content">
+                                    <div class="result-label">Palindrome</div>
+                                    <div class="result-value" id="palindromeValue">-</div>
+                                </div>
+                            </div>
+
+                            <div class="results-grid">
+                                <div class="result-item" data-reveal>
+                                    <div class="result-icon">
+                                        <i class="fas fa-ruler-combined"></i>
+                                    </div>
+                                    <div class="result-content">
+                                        <div class="result-label">Length</div>
+                                        <div class="result-value" id="lengthValue">-</div>
+                                    </div>
+                                </div>
+
+                                <div class="result-item" data-reveal data-reveal-delay="80">
+                                    <div class="result-icon">
+                                        <i class="fas fa-list-ol"></i>
+                                    </div>
+                                    <div class="result-content">
+                                        <div class="result-label">Word Count</div>
+                                        <div class="result-value" id="wordCountValue">-</div>
+                                    </div>
+                                </div>
+
+                                <div class="result-item" data-reveal data-reveal-delay="120">
+                                    <div class="result-icon">
+                                        <i class="fas fa-sparkles"></i>
+                                    </div>
+                                    <div class="result-content">
+                                        <div class="result-label">Unique Characters</div>
+                                        <div class="result-value" id="uniqueCharsValue">-</div>
+                                    </div>
+                                </div>
+
+                                <div class="result-item" data-reveal data-reveal-delay="160">
+                                    <div class="result-icon">
+                                        <i class="fas fa-fingerprint"></i>
+                                    </div>
+                                    <div class="result-content">
+                                        <div class="result-label">SHA-256 Hash</div>
+                                        <div class="result-value hash-value" id="hashValue">-</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="frequency-section">
+                                <h4><i class="fas fa-chart-pie"></i> Character Frequency</h4>
+                                <div class="frequency-chart" id="frequencyChart"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- History Section -->
+            <section class="history-section" id="history">
+                <div class="container">
+                    <div class="section-header" data-reveal>
+                        <div>
+                            <p class="eyebrow">Signal Log</p>
+                            <h2 class="section-title">Analysis History</h2>
+                            <p class="section-subtitle">Every string you parse leaves a trace. Filter and revisit them.</p>
+                        </div>
+                        <button class="btn btn-secondary" id="refreshHistory">
+                            <i class="fas fa-sync-alt"></i> Refresh
+                        </button>
+                    </div>
+
+                    <!-- Filters -->
+                    <div class="filters-card" data-reveal>
+                        <h3><i class="fas fa-filter"></i> Filters</h3>
+                        <div class="filters-grid">
+                            <div class="filter-group">
+                                <label>
+                                    <input type="checkbox" id="filterPalindrome">
+                                    <span>Palindromes Only</span>
+                                </label>
+                            </div>
+                            <div class="filter-group">
+                                <label for="minLength">Min Length</label>
+                                <input type="number" id="minLength" min="0" placeholder="Min">
+                            </div>
+                            <div class="filter-group">
+                                <label for="maxLength">Max Length</label>
+                                <input type="number" id="maxLength" min="0" placeholder="Max">
+                            </div>
+                            <div class="filter-group">
+                                <label for="wordCount">Word Count</label>
+                                <input type="number" id="wordCount" min="0" placeholder="Exact">
+                            </div>
+                            <button class="btn btn-primary" id="applyFilters">
+                                <i class="fas fa-check"></i> Apply Filters
+                            </button>
+                            <button class="btn btn-secondary" id="clearFilters">
+                                <i class="fas fa-times"></i> Clear
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- History Items -->
+                    <div class="history-grid" id="historyGrid" data-reveal>
+                        <!-- History items inserted by JavaScript -->
+                        <div class="loading" id="historyLoading">
+                            <i class="fas fa-spinner fa-spin"></i> Loading history...
+                        </div>
+                    </div>
+
+                    <div class="empty-state" id="emptyState" style="display: none;">
+                        <i class="fas fa-inbox"></i>
+                        <h3>No Strings Found</h3>
+                        <p>Start analyzing strings to build your history!</p>
+                        <a href="#analyzer" class="btn btn-primary">
+                            Analyze Your First String
                         </a>
                     </div>
                 </div>
+            </section>
+        </main>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <div class="container">
+                <div class="footer-content">
+                    <div class="footer-brand" data-reveal>
+                        <div class="logo">
+                            <i class="fas fa-text-height"></i>
+                            <span>String Analyzer</span>
+                        </div>
+                        <p>Crafted by <strong>Kalanza</strong> • Powered by FastAPI • Deployed on Heroku</p>
+                    </div>
+                    <div class="footer-links" data-reveal>
+                        <h4>Quick Links</h4>
+                        <a href="#home">Home</a>
+                        <a href="#analyzer">Analyzer</a>
+                        <a href="#history">History</a>
+                        <a href="/docs" target="_blank">API Docs</a>
+                    </div>
+                    <div class="footer-info" data-reveal>
+                        <h4>Open Source</h4>
+                        <p>Track the project and contribute on GitHub.</p>
+                        <div class="social-links">
+                            <a href="https://github.com/Kalanza/string-analyzer" target="_blank" aria-label="GitHub">
+                                <i class="fab fa-github"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="footer-bottom">
+                    <p>&copy; 2025 String Analyzer. All rights reserved.</p>
+                </div>
             </div>
-            <div class="footer-bottom">
-                <p>&copy; 2025 String Analyzer. All rights reserved.</p>
-            </div>
-        </div>
-    </footer>
+        </footer>
+    </div>
 
     <!-- Toast Notification -->
     <div class="toast" id="toast">
